@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Brands Collection
+    match /brands/{brandId} {
+      allow read: if true;
+      allow create: if isValidId(brandId) && incoming().name is string && incoming().name.size() <= 150;
+      allow update: if isValidId(brandId) && incoming().name is string && incoming().name.size() <= 150;
+      allow delete: if isValidId(brandId);
+    }
+
+    // Trends Collection
+    match /trends/{trendId} {
+      allow read: if true;
+      allow create: if isValidId(trendId) && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isValidId(trendId) && incoming().title is string && incoming().title.size() <= 200;
+      allow delete: if isValidId(trendId);
+    }
+
+    // Campaigns Collection
+    match /campaigns/{campaignId} {
+      allow read: if true;
+      allow create: if isValidId(campaignId) && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isValidId(campaignId) && incoming().title is string && incoming().title.size() <= 200;
+      allow delete: if isValidId(campaignId);
+    }
+
+    // Performance Data Collection
+    match /performanceData/{dataId} {
+      allow read: if true;
+      allow create: if isValidId(dataId) && incoming().metricType is string && incoming().metricType.size() <= 100;
+      allow update: if isValidId(dataId) && incoming().metricType is string && incoming().metricType.size() <= 100;
+      allow delete: if isValidId(dataId);
+    }
+
+    // Scheduled Posts Collection
+    match /scheduledPosts/{postId} {
+      allow read: if true;
+      allow create: if isValidId(postId) && incoming().contentCopy is string;
+      allow update: if isValidId(postId) && incoming().contentCopy is string;
+      allow delete: if isValidId(postId);
+    }
+
+    // Decisions Collection
+    match /decisions/{decisionId} {
+      allow read: if true;
+      allow create: if isValidId(decisionId) && incoming().decision is string;
+      allow update: if isValidId(decisionId) && incoming().decision is string;
+      allow delete: if isValidId(decisionId);
+    }
+
+    // Default deny for everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

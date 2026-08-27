@@ -1,0 +1,146 @@
+{
+  "entities": {
+    "Brand": {
+      "title": "Brand Profile",
+      "description": "Represents a brand profile with voice guidelines, audience targeting, guardrails, and historical benchmarks.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "maxLength": 150 },
+        "industry": { "type": "string", "maxLength": 150 },
+        "tagline": { "type": "string", "maxLength": 250 },
+        "voice": { "type": "string", "maxLength": 500 },
+        "primaryAudience": { "type": "string", "maxLength": 250 },
+        "secondaryAudience": { "type": "string", "maxLength": 250 },
+        "geographicMarket": { "type": "string", "maxLength": 250 },
+        "prohibitedContent": { "type": "array" },
+        "toneKeywords": { "type": "array" },
+        "historicalPerformance": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "industry", "voice", "primaryAudience"]
+    },
+    "Trend": {
+      "title": "Social Trend Signal",
+      "description": "Represents a cultural or social media trend signal with DNA deconstruction, velocity, heat score, and fit recommendations.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 100 },
+        "originPlatform": { "type": "string", "maxLength": 100 },
+        "firstDetected": { "type": "string", "maxLength": 100 },
+        "heatLevel": { "type": "string", "maxLength": 50 },
+        "quoteExample": { "type": "string", "maxLength": 500 },
+        "dna": { "type": "object" },
+        "fitScores": { "type": "object" },
+        "recommendation": { "type": "string", "maxLength": 50 },
+        "ideas": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "category", "originPlatform", "heatLevel"]
+    },
+    "Campaign": {
+      "title": "Campaign Brief",
+      "description": "Represents a marketing campaign brief with deliverables, budget allocation, timelines, and predicted KPIs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "brandName": { "type": "string", "maxLength": 150 },
+        "title": { "type": "string", "maxLength": 200 },
+        "trendAnchor": { "type": "string", "maxLength": 200 },
+        "objective": { "type": "string", "maxLength": 500 },
+        "targetAudience": { "type": "string", "maxLength": 250 },
+        "status": { "type": "string", "maxLength": 50 },
+        "budgetAllocation": { "type": "string", "maxLength": 100 },
+        "keyDeliverables": { "type": "array" },
+        "guardrailChecklist": { "type": "array" },
+        "predictedImpact": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "brandId", "title", "objective", "status"]
+    },
+    "PerformanceData": {
+      "title": "Performance Metric Record",
+      "description": "Historical performance data metrics for calibrated decision simulations and analytics.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "metricType": { "type": "string", "maxLength": 100 },
+        "engagementRate": { "type": "number" },
+        "roiMultiplier": { "type": "number" },
+        "sentimentScore": { "type": "number" },
+        "reachEstimate": { "type": "number" },
+        "details": { "type": "object" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "brandId", "metricType"]
+    },
+    "ScheduledPost": {
+      "title": "Scheduled Post",
+      "description": "Cross-platform scheduled social media content with publish times, assets, and channel status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "platform": { "type": "string", "maxLength": 50 },
+        "scheduledTime": { "type": "string", "maxLength": 100 },
+        "dateFormatted": { "type": "string", "maxLength": 100 },
+        "contentCopy": { "type": "string", "maxLength": 5000 },
+        "hashtags": { "type": "array" },
+        "status": { "type": "string", "maxLength": 50 },
+        "trendReference": { "type": "string", "maxLength": 200 },
+        "format": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "brandId", "platform", "scheduledTime", "contentCopy", "status"]
+    },
+    "DecisionRecord": {
+      "title": "Decision Audit Record",
+      "description": "Logged tactical decisions with simulation outcomes, approved dates, and projected ROI.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 100 },
+        "trendTitle": { "type": "string", "maxLength": 200 },
+        "decision": { "type": "string", "maxLength": 50 },
+        "rationale": { "type": "string", "maxLength": 2000 },
+        "expectedROI": { "type": "string", "maxLength": 100 },
+        "brandSafetyAudit": { "type": "string", "maxLength": 500 },
+        "recommendedFormat": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "brandId", "decision", "rationale"]
+    }
+  },
+  "firestore": {
+    "/brands/{brandId}": {
+      "schema": "#/entities/Brand",
+      "description": "Master brand profiles and identity guidelines."
+    },
+    "/trends/{trendId}": {
+      "schema": "#/entities/Trend",
+      "description": "Live social and cultural trends discovered from open web, blogs, and social platforms."
+    },
+    "/campaigns/{campaignId}": {
+      "schema": "#/entities/Campaign",
+      "description": "Campaign briefs created and scheduled for brands."
+    },
+    "/performanceData/{dataId}": {
+      "schema": "#/entities/PerformanceData",
+      "description": "Analytics and simulation calibration data."
+    },
+    "/scheduledPosts/{postId}": {
+      "schema": "#/entities/ScheduledPost",
+      "description": "Content calendar scheduled posts."
+    },
+    "/decisions/{decisionId}": {
+      "schema": "#/entities/DecisionRecord",
+      "description": "Audit trail of executive brand marketing decisions."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "TaskAssit",
+  "description": "TaskAssit: AI Social Intelligence, Trend Engine & Decision Studio with NotebookLM dark mode interface.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
