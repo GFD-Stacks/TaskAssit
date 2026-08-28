@@ -340,7 +340,19 @@ export interface ChatMessage {
   structuredInsight?: StructuredSocialInsight;
 }
 
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL?: string;
+  role: 'Brand Executive' | 'Culture Strategist' | 'Social Media Lead' | 'Agency Creative Director';
+  agencyOrBrand: string;
+  marketLocation: string;
+  isGuest?: boolean;
+}
+
 export type AppViewMode =
+  | 'landing'
   | 'social_brain'
   | 'campaign_briefs'
   | 'post_creator'

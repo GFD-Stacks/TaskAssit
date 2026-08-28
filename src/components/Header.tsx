@@ -7,26 +7,33 @@ import {
   Share2,
   ChevronDown,
   Building2,
-  History,
   Activity,
   CheckCircle2,
   Plus,
   Database,
   RefreshCw,
-  Trash2
+  Trash2,
+  User,
+  LogOut,
+  Globe,
+  LogIn
 } from 'lucide-react';
-import { BrandProfile, TrendWatcherStatus } from '../types';
+import { BrandProfile, TrendWatcherStatus, UserProfile } from '../types';
 
 interface HeaderProps {
   currentBrand: BrandProfile;
   brands: BrandProfile[];
   trendWatcherStatus?: TrendWatcherStatus;
+  currentUser?: UserProfile | null;
   onSelectBrand: (brand: BrandProfile) => void;
   onOpenWhatIfSandbox: () => void;
   onOpenAddSource: () => void;
   onExportReport: () => void;
   onCleanSlate?: () => void;
   onTriggerLiveSearch?: () => void;
+  onOpenLandingPage?: () => void;
+  onOpenAuth?: (mode?: 'signin' | 'signup') => void;
+  onLogout?: () => void;
   isSearchingLive?: boolean;
 }
 
@@ -34,15 +41,20 @@ export const Header: React.FC<HeaderProps> = ({
   currentBrand,
   brands,
   trendWatcherStatus,
+  currentUser,
   onSelectBrand,
   onOpenWhatIfSandbox,
   onOpenAddSource,
   onExportReport,
   onCleanSlate,
   onTriggerLiveSearch,
+  onOpenLandingPage,
+  onOpenAuth,
+  onLogout,
   isSearchingLive = false
 }) => {
   const [showBrandDropdown, setShowBrandDropdown] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showShareNotification, setShowShareNotification] = useState(false);
 
   const handleShare = () => {
@@ -65,6 +77,17 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </span>
         </div>
+
+        {onOpenLandingPage && (
+          <button
+            onClick={onOpenLandingPage}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#282a2c] hover:bg-[#333538] border border-[#3c4043] text-xs text-gray-300 hover:text-white transition-colors cursor-pointer"
+            title="View Homepage & Product Overview"
+          >
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
+            <span>Overview Page</span>
+          </button>
+        )}
 
         <div className="h-4 w-px bg-[#333538] mx-1" />
 
@@ -162,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Right: Quick Action Controls */}
+      {/* Right: Quick Action Controls & User Profile */}
       <div className="flex items-center gap-2">
         {onCleanSlate && (
           <button
@@ -209,11 +232,91 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="h-4 w-px bg-[#333538] mx-0.5" />
 
         {/* Safety Indicator Badge */}
-        <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-[11px] font-medium" title="Brand Safety Filter: Active">
+        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-[11px] font-medium" title="Brand Safety Filter: Active">
           <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="hidden sm:inline">Protected</span>
+          <span>Protected</span>
+        </div>
+
+        {/* User Account / Profile Dropdown */}
+        <div className="relative">
+          {currentUser ? (
+            <button
+              onClick={() => setShowUserDropdown(!showUserDropdown)}
+              className="flex items-center gap-2 p-1 sm:px-2.5 sm:py-1 rounded-xl bg-[#282a2c] hover:bg-[#333538] border border-[#3c4043] transition-colors cursor-pointer"
+            >
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
+                {currentUser.displayName?.charAt(0) || 'U'}
+              </div>
+              <div className="hidden md:block text-left">
+                <div className="text-xs font-medium text-gray-200 leading-none">{currentUser.displayName}</div>
+                <div className="text-[9px] text-blue-400 leading-tight mt-0.5">{currentUser.role}</div>
+              </div>
+              <ChevronDown className="w-3 h-3 text-gray-400 hidden sm:block" />
+            </button>
+          ) : (
+            <button
+              onClick={() => onOpenAuth?.('signin')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Sign In</span>
+            </button>
+          )}
+
+          {showUserDropdown && currentUser && (
+            <div className="absolute right-0 top-full mt-1.5 w-64 bg-[#282a2c] border border-[#3c4043] rounded-2xl shadow-2xl p-2 z-50 space-y-1">
+              <div className="p-2.5 bg-[#1e1f20] rounded-xl border border-[#3c4043] space-y-1">
+                <div className="font-bold text-xs text-gray-100">{currentUser.displayName}</div>
+                <div className="text-[10px] text-blue-400">{currentUser.role}</div>
+                <div className="text-[10px] text-gray-400">{currentUser.agencyOrBrand}</div>
+                <div className="text-[10px] text-gray-400">{currentUser.email}</div>
+              </div>
+
+              {onOpenLandingPage && (
+                <button
+                  onClick={() => {
+                    setShowUserDropdown(false);
+                    onOpenLandingPage();
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs text-gray-200 hover:bg-[#333538] rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <Globe className="w-3.5 h-3.5 text-blue-400" />
+                  <span>View Product Landing Page</span>
+                </button>
+              )}
+
+              {onOpenAuth && (
+                <button
+                  onClick={() => {
+                    setShowUserDropdown(false);
+                    onOpenAuth('signup');
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs text-gray-200 hover:bg-[#333538] rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <User className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Switch Account / Personas</span>
+                </button>
+              )}
+
+              <div className="border-t border-[#3c4043] my-1" />
+
+              {onLogout && (
+                <button
+                  onClick={() => {
+                    setShowUserDropdown(false);
+                    onLogout();
+                  }}
+                  className="w-full text-left px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
   );
 };
+

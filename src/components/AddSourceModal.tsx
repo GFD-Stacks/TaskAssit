@@ -48,24 +48,24 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
     const newBrand: BrandProfile = {
       id: `brand-${Date.now()}`,
       name: brandName,
-      industry: industry || 'Retail & Consumer',
-      tagline: tagline || 'Crafting the next generation of social excellence.',
-      voice: voice || 'Bold, contemporary, and culturally connected.',
-      toneKeywords: ['Modern', 'Culturally Attuned', 'Engaging'],
-      primaryAudience: audience || 'Ages 18-35 Urban Consumers',
-      secondaryAudience: 'Global Diaspora',
-      geographicMarket: 'Lagos, London, Global',
+      industry: industry || 'Lagos Luxury Fashion & Streetwear',
+      tagline: tagline || 'Contemporary African heritage tailored for global tastemakers.',
+      voice: voice || 'Poised, culturally vibrant, with authentic Lagos swagger.',
+      toneKeywords: ['Lagos Luxury', 'Culturally Attuned', 'Engaging', 'Eko Swagger'],
+      primaryAudience: audience || 'Ages 20-38 Lagos & Global Diaspora Tastemakers',
+      secondaryAudience: 'West African & Diaspora Creative Executives',
+      geographicMarket: 'Lagos (Victoria Island, Ikoyi, Lekki), Abuja, London Diaspora',
       prohibitedContent: [
-        'Unverified political commentary',
-        'Aggressive clickbait',
-        'Partisan controversy'
+        'Unverified sensationalist gossip',
+        'Misleading promotional discounts',
+        'Partisan political controversies'
       ],
       historicalPerformance: {
-        totalCampaignsEvaluated: 12,
-        topFormat: 'Short-Form Video (9:16)',
-        avgEngagement: '+25.0%',
-        primaryObjection: 'Price to value ratio',
-        modelCalibrationAccuracy: 88
+        totalCampaignsEvaluated: 16,
+        topFormat: 'Short-Form Video (9:16) with Cultural Audio Sync',
+        avgEngagement: '+38.4%',
+        primaryObjection: 'Exclusivity verification & delivery timelines',
+        modelCalibrationAccuracy: 92
       }
     };
 
@@ -151,7 +151,7 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Apex Health, Aura Coffee"
+                  placeholder="e.g. LuxeAura Lagos, Eko Artisan Collective, Alara Gourmet"
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                   className="w-full px-3 py-2 bg-[#282a2c] border border-[#3c4043] rounded-xl text-xs text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500"
@@ -163,7 +163,7 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
                   <label className="text-xs text-gray-300 font-medium">Industry</label>
                   <input
                     type="text"
-                    placeholder="e.g. Fintech, Fashion, F&B"
+                    placeholder="e.g. Lagos Luxury Fashion, Fintech, Hospitality"
                     value={industry}
                     onChange={(e) => setIndustry(e.target.value)}
                     className="w-full px-3 py-2 bg-[#282a2c] border border-[#3c4043] rounded-xl text-xs text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500"
@@ -174,7 +174,7 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
                   <label className="text-xs text-gray-300 font-medium">Tagline / Mission</label>
                   <input
                     type="text"
-                    placeholder="e.g. Sustainable luxury for all"
+                    placeholder="e.g. African heritage tailored for global tastemakers"
                     value={tagline}
                     onChange={(e) => setTagline(e.target.value)}
                     className="w-full px-3 py-2 bg-[#282a2c] border border-[#3c4043] rounded-xl text-xs text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500"
@@ -186,7 +186,7 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
                 <label className="text-xs text-gray-300 font-medium">Brand Voice & Tone</label>
                 <input
                   type="text"
-                  placeholder="e.g. Witty, sophisticated, culturally rooted"
+                  placeholder="e.g. Poised, culturally attuned, with authentic Lagos swagger"
                   value={voice}
                   onChange={(e) => setVoice(e.target.value)}
                   className="w-full px-3 py-2 bg-[#282a2c] border border-[#3c4043] rounded-xl text-xs text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500"
@@ -197,7 +197,7 @@ export const AddSourceModal: React.FC<AddSourceModalProps> = ({
                 <label className="text-xs text-gray-300 font-medium">Primary Audience</label>
                 <input
                   type="text"
-                  placeholder="e.g. Ages 20-35 Urban Professionals"
+                  placeholder="e.g. Ages 22-38 Lagos & Diaspora Tastemakers"
                   value={audience}
                   onChange={(e) => setAudience(e.target.value)}
                   className="w-full px-3 py-2 bg-[#282a2c] border border-[#3c4043] rounded-xl text-xs text-gray-200 placeholder-gray-400 focus:outline-none focus:border-blue-500"

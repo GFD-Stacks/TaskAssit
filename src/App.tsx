@@ -7,6 +7,8 @@ import { InteractionStudio } from './components/InteractionStudio';
 import { TrendDNAInspectorModal } from './components/TrendDNAInspectorModal';
 import { AddSourceModal } from './components/AddSourceModal';
 import { ContentGeneratorModal } from './components/ContentGeneratorModal';
+import { LandingPage } from './components/LandingPage';
+import { AuthModal } from './components/AuthModal';
 
 // Studios
 import { CampaignBriefStudio } from './components/views/CampaignBriefStudio';
@@ -34,7 +36,9 @@ import {
   subscribeToScheduledPosts,
   subscribeToDecisions,
   subscribeToPerformanceData,
-  clearAllFirestoreCollections
+  clearAllFirestoreCollections,
+  getStoredLocalUser,
+  logoutUser
 } from './lib/firebase';
 
 import {
@@ -61,7 +65,8 @@ import {
   StudioFlashcard,
   StudioQuizQuestion,
   StudioInfographic,
-  StudioDataTable
+  StudioDataTable,
+  UserProfile
 } from './types';
 
 // Default clean initial brand if Firestore is completely empty
@@ -91,8 +96,13 @@ const defaultCleanBrand: BrandProfile = {
 };
 
 export function App() {
-  // Navigation View State
-  const [appViewMode, setAppViewMode] = useState<AppViewMode>('social_brain');
+  // Navigation View State ('landing' for marketing/details homepage, or studio views)
+  const [appViewMode, setAppViewMode] = useState<AppViewMode>('landing');
+
+  // User Authentication State
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => getStoredLocalUser());
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
 
   // Brand & Social Brain Firestore-backed state
   const [brands, setBrands] = useState<BrandProfile[]>([]);
@@ -1074,6 +1084,50 @@ export function App() {
     }
   };
 
+  const handleOpenLandingPage = () => {
+    setAppViewMode('landing');
+  };
+
+  const handleLaunchStudio = () => {
+    setAppViewMode('social_brain');
+  };
+
+  const handleOpenAuth = (mode: 'signin' | 'signup' = 'signin') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleAuthSuccess = (user: UserProfile) => {
+    setCurrentUser(user);
+    setIsAuthModalOpen(false);
+    setAppViewMode('social_brain');
+  };
+
+  const handleLogout = async () => {
+    await logoutUser();
+    setCurrentUser(null);
+  };
+
+  if (appViewMode === 'landing') {
+    return (
+      <div className="min-h-screen w-full bg-[#111213] text-gray-200 font-sans antialiased overflow-x-hidden">
+        <LandingPage
+          currentUser={currentUser}
+          onLaunchApp={handleLaunchStudio}
+          onOpenAuth={handleOpenAuth}
+        />
+
+        {/* Global Auth Modal */}
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          initialMode={authModalMode}
+          onClose={() => setIsAuthModalOpen(false)}
+          onAuthSuccess={handleAuthSuccess}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full bg-[#111213] text-gray-200 font-sans antialiased flex flex-col justify-start items-center overflow-x-hidden">
       <div className="w-full max-w-[1920px] h-screen flex flex-col bg-[#171819] border-x border-[#25272a] shadow-2xl overflow-hidden relative">
@@ -1082,6 +1136,7 @@ export function App() {
           currentBrand={currentBrand}
           brands={brands.length > 0 ? brands : [defaultCleanBrand]}
           trendWatcherStatus={trendWatcherStatus}
+          currentUser={currentUser}
           onSelectBrand={setCurrentBrand}
           onOpenWhatIfSandbox={() => {
             setAppViewMode('social_brain');
@@ -1094,6 +1149,9 @@ export function App() {
           }}
           onCleanSlate={handleCleanSlate}
           onTriggerLiveSearch={() => fetchLiveRealtimeTrends()}
+          onOpenLandingPage={handleOpenLandingPage}
+          onOpenAuth={handleOpenAuth}
+          onLogout={handleLogout}
           isSearchingLive={isSearchingLive}
         />
 
@@ -1326,6 +1384,14 @@ export function App() {
         brand={currentBrand}
         isOpen={isContentModalOpen}
         onClose={() => setIsContentModalOpen(false)}
+      />
+
+      {/* Global Auth Modal for Studio workspace */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        initialMode={authModalMode}
+        onClose={() => setIsAuthModalOpen(false)}
+        onAuthSuccess={handleAuthSuccess}
       />
       </div>
     </div>

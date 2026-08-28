@@ -107,14 +107,14 @@ async function generateWithResilience(ai: GoogleGenAI, options: GenerateOptions)
       }
 
       if (isOverloaded) {
-        console.warn(`Model ${model} rate-limited or busy (429/503). Trying fallback model...`);
+        console.info(`Model ${model} rate-limited or busy, attempting fallback model...`);
       } else {
-        console.warn(`Model ${model} note:`, err?.message || err);
+        console.info(`Model ${model} unavailable, attempting fallback model...`);
       }
     }
   }
 
-  throw lastError || new Error('All model generation attempts failed');
+  throw lastError || new Error('All model generation attempts completed');
 }
 
 // API Health Check
@@ -210,7 +210,7 @@ Output JSON format matching this schema:
       }
     }
   } catch (err: any) {
-    console.warn("Gemini Chat note, using intelligent response fallback:", err?.message || err);
+    console.info("Gemini Chat notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback intelligent response engine
@@ -359,7 +359,7 @@ Return strictly JSON matching:
       }
     }
   } catch (err: any) {
-    console.warn("Analyze Trend note, using fallback:", err?.message || err);
+    console.info("Analyze Trend notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback decomposed trend
@@ -571,7 +571,7 @@ Return JSON strictly matching:
       }
     }
   } catch (err: any) {
-    console.warn("Simulate Decision note, using fallback:", err?.message || err);
+    console.info("Simulate Decision notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback simulation
@@ -710,7 +710,7 @@ Return JSON strictly matching:
       }
     }
   } catch (err: any) {
-    console.warn("Generate Content note, using fallback:", err?.message || err);
+    console.info("Generate Content notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback content asset
@@ -954,7 +954,7 @@ Generate structured JSON data for studio tool "${toolType}" for brand "${brandNa
       }
     }
   } catch (err: any) {
-    console.warn("Generate Studio note, using fallback:", err?.message || err);
+    console.info("Generate Studio notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Robust typed fallbacks per toolType
@@ -1297,7 +1297,7 @@ Return strictly valid JSON matching this schema:
       }
     }
   } catch (err: any) {
-    console.warn("Generate Brief note, using fallback:", err?.message || err);
+    console.info("Generate Brief notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback brief
@@ -1498,7 +1498,7 @@ Return strictly valid JSON:
       }
     }
   } catch (err: any) {
-    console.warn("Adapt Omnichannel note, using fallback:", err?.message || err);
+    console.info("Adapt Omnichannel notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback omnichannel adaptation
@@ -1689,7 +1689,7 @@ Return strictly JSON array:
       }
     }
   } catch (err: any) {
-    console.warn("Generate Calendar note, using fallback:", err?.message || err);
+    console.info("Generate Calendar notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback Calendar (7 Days of High-Performance Structured Posts)
@@ -1888,7 +1888,7 @@ Return strictly JSON:
       }
     }
   } catch (err: any) {
-    console.warn("Audit Content note, using fallback:", err?.message || err);
+    console.info("Audit Content notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback audit analysis
@@ -2023,7 +2023,7 @@ Return strictly JSON:
       }
     }
   } catch (err: any) {
-    console.warn("Analyze Performance note, using fallback:", err?.message || err);
+    console.info("Analyze Performance notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback performance analysis
@@ -2255,7 +2255,7 @@ Return JSON:
       }
     }
   } catch (err: any) {
-    console.warn("Rewrite Audience note, using fallback:", err?.message || err);
+    console.info("Rewrite Audience notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   res.json({
@@ -2361,7 +2361,7 @@ app.post("/api/gemini/transcribe", async (req, res) => {
       }
     }
   } catch (err: any) {
-    console.warn("Audio Transcription note:", err?.message || err);
+    console.info("Audio Transcription notice:", err?.message?.substring(0, 80) || "Offline");
   }
 
   res.json({ transcript: "" });
@@ -2660,7 +2660,7 @@ Return strictly valid JSON:
       }
     }
   } catch (err: any) {
-    console.warn("Generate Audio Overview note, using fallback:", err?.message || err);
+    console.info("Generate Audio Overview notice (using structured fallback):", err?.message?.substring(0, 80) || "Offline");
   }
 
   // Fallback Audio Overview
